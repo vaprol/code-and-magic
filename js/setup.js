@@ -1,5 +1,6 @@
 document.querySelector('.setup').classList.remove('hidden');
 
+var NUMBER_OF_WIZARDS = 4;
 var WIZARD_NAMES = [
     'Иван',
     'Хуан Себастьян',
@@ -10,7 +11,6 @@ var WIZARD_NAMES = [
     'Люпита',
     'Вашингтон'
 ];
-
 var WIZARD_SURNAMES = [
     'да Марья',
     'Верон',
@@ -21,7 +21,6 @@ var WIZARD_SURNAMES = [
     'Нионго',
     'Ирвинг'
 ];
-
 var COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -30,7 +29,6 @@ var COAT_COLORS = [
     'rgb(215, 210, 55)',
     'rgb(0, 0, 0)'
 ];
-
 var EYE_COLORS = [
     'black',
     'red',
@@ -53,4 +51,18 @@ var generateWizardsArrow = function (numberOfWizards) {
     return wizards;
 };
 
-console.log(generateWizardsArrow(4));
+var addSimilarWizards = function (wizards) {
+    var wizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('div');
+    var wizardsDocFragment = document.createDocumentFragment();
+    for (var i = 0; i < NUMBER_OF_WIZARDS; i++) {
+        var wizardNode = wizardTemplate.cloneNode(true);
+        wizardNode.querySelector('.setup-similar-label').textContent = wizards[i].name;
+        wizardNode.querySelector('.wizard-coat').style.fill = wizards[i].coatColor;
+        wizardNode.querySelector('.wizard-eyes').style.fill = wizards[i].eyesColor;
+        wizardsDocFragment.appendChild(wizardNode);
+    }
+    return wizardsDocFragment;
+};
+
+document.querySelector('.setup-similar-list').appendChild(addSimilarWizards(generateWizardsArrow(NUMBER_OF_WIZARDS)));
+document.querySelector('.setup-similar').classList.remove('hidden');
