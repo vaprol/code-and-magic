@@ -61,6 +61,6 @@ window.renderStatistics = function (ctx, names, times) {
 
     var maxTime = findMaxTime();
     for (var i = 0; i < names.length; i++) {
-        renderColumn(i, names[i], Math.round(times[i]) * 150 / maxTime);
+        renderColumn(i, names[i], Math.round(times[i]) * columnMaxHeight / maxTime);
     }
 };
