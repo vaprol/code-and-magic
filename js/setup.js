@@ -34,6 +34,13 @@ var EYE_COLORS = [
     'yellow',
     'green'
 ];
+var FIREBALL_COLORS = [
+    '#ee4830',
+    '#30a8ee',
+    '#5ce6c0',
+    '#e848d5',
+    '#e6e848'
+];
 
 var ENTER_KEYCODE = 13;
 var ESC_KEYCODE = 27;
@@ -110,3 +117,26 @@ setupOpenButton.addEventListener('keydown', function (evt) {
         showSetupOverlay();
     }
 });
+
+var pickColorFromArray = function (colorArray) {
+    return colorArray[Math.floor(Math.random() * colorArray.length)];
+};
+var onCoatClick = function () {
+    var coatColor = pickColorFromArray(COAT_COLORS);
+    setupOverlay.querySelector('.setup-wizard .wizard-coat').style.fill = coatColor;
+    setupOverlay.querySelector('input[name=coat-color]').value = coatColor;
+};
+var onEyesClick = function () {
+    var eyeColor = pickColorFromArray(EYE_COLORS);
+    setupOverlay.querySelector('.setup-wizard .wizard-eyes').style.fill = eyeColor;
+    setupOverlay.querySelector('input[name=eyes-color]').value = eyeColor;
+};
+var onFireballClick = function () {
+    var fireballColor = pickColorFromArray(FIREBALL_COLORS);
+    setupOverlay.querySelector('.setup-fireball-wrap').style.backgroundColor = fireballColor;
+    setupOverlay.querySelector('input[name=fireball-color]').value = fireballColor;
+};
+
+setupOverlay.querySelector('.setup-wizard .wizard-coat').addEventListener('click', onCoatClick);
+setupOverlay.querySelector('.setup-wizard .wizard-eyes').addEventListener('click', onEyesClick);
+setupOverlay.querySelector('.setup-fireball-wrap').addEventListener('click', onFireballClick);
