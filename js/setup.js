@@ -97,7 +97,8 @@ var showSetupOverlay = function () {
 };
 var hideSetupOverlay = function () {
     setupOverlay.classList.add('hidden');
-
+    setupOverlay.style.left = '';
+    setupOverlay.style.top = '';
     document.removeEventListener('keydown', onDocumentEscKeydown);
 };
 var onDocumentEscKeydown = function (evt) {
@@ -117,6 +118,45 @@ setupOpenButton.addEventListener('keydown', function (evt) {
         showSetupOverlay();
     }
 });
+
+var dialogHandler = setupOverlay.querySelector('input[name=avatar]');
+var onUserpicMousedown = function (evt) {
+    var isMoved = false;
+    evt.preventDefault();
+    var startCoords  = {
+        x: evt.clientX,
+        y: evt.clientY
+    };
+    var onDocumentMousemove = function (moveEvt) {
+        moveEvt.preventDefault();
+        var coordsShift = {
+            x: moveEvt.clientX - startCoords.x,
+            y: moveEvt.clientY - startCoords.y
+        };
+        if (coordsShift.x > 0 || coordsShift.y > 0) {
+            isMoved = true;
+        }
+        setupOverlay.style.left = (setupOverlay.offsetLeft + coordsShift.x) + 'px';
+        setupOverlay.style.top = (setupOverlay.offsetTop + coordsShift.y) + 'px';
+        startCoords.x = moveEvt.clientX;
+        startCoords.y = moveEvt.clientY;
+    };
+    var onUserpicMouseup = function (evt) {
+        evt.preventDefault();
+        document.removeEventListener('mousemove', onDocumentMousemove);
+        document.removeEventListener('mouseup', onUserpicMouseup);
+    };
+    var onAvatarInputClick = function (evt) {
+        if (isMoved) {
+            evt.preventDefault();
+        }
+        dialogHandler.removeEventListener('click', onAvatarInputClick);
+    };
+    dialogHandler.addEventListener('click', onAvatarInputClick);
+    document.addEventListener('mousemove', onDocumentMousemove);
+    document.addEventListener('mouseup', onUserpicMouseup);
+};
+dialogHandler.addEventListener('mousedown', onUserpicMousedown);
 
 var pickColorFromArray = function (colorArray) {
     return colorArray[Math.floor(Math.random() * colorArray.length)];
