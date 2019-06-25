@@ -3,6 +3,8 @@
     var setupCloseButton = document.querySelector('.setup-close');
     var setupOverlay = document.querySelector('.setup');
     var dialogHandler = setupOverlay.querySelector('input[name=avatar]');
+    var wizardSetupForm = setupOverlay.querySelector('.setup-wizard-form');
+    var formSubmitButton = setupOverlay.querySelector('.setup-submit');
 
     var showSetupOverlay = function () {
         if (Array.from(setupOverlay.querySelector('.setup-similar').classList).indexOf('hidden') !== -1) {
@@ -99,4 +101,16 @@
     setupOverlay.querySelector('.setup-wizard .wizard-coat').addEventListener('click', onCoatClick);
     setupOverlay.querySelector('.setup-wizard .wizard-eyes').addEventListener('click', onEyesClick);
     setupOverlay.querySelector('.setup-fireball-wrap').addEventListener('click', onFireballClick);
+
+    formSubmitButton.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        var formData = new FormData(wizardSetupForm);
+        var onLoadSuccess = function () {
+            hideSetupOverlay();
+        };
+        var onLoadError = function (errMessage) {
+            console.error(errMessage);
+        };
+        window.backend.save(formData, onLoadSuccess, onLoadError);
+    })
 })();
